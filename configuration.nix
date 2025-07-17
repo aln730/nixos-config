@@ -16,11 +16,6 @@
   boot.loader.grub.useOSProber = true;
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -53,54 +48,82 @@
   users.users.zxcv = {
     isNormalUser = true;
     description = "zxcv";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
- wget
- git
- curl
- fastfetch
- htop
- tmux
- python3
- go
- gcc
- clang
- rustup
- nodejs
- cmake
+  # Enable sudo without password (optional)
+  security.sudo.extraRules = [
+    {
+      users = [ "zxcv" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  # Enable experimental nix features like flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # List services that you want to enable:
+  # Install system-wide packages
+  environment.systemPackages = with pkgs; [
+    wget
+    git
+    curl
+    fastfetch
+    htop
+    tmux
+    python3
+    go
+    gcc
+    clang
+    rustup
+    nodejs
+    cmake
+    unzip
+    zip
+    file
+    bat
+    eza
+    ripgrep
+    fd
+    fzf
+    lazygit
+    gh
+    nix-output-monitor
+    neovim
+  ];
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  # Enable OpenSSH for remote access
+  services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # Enable Flatpak (optional)
+  services.flatpak.enable = true;
+
+  # Enable Docker
+  virtualisation.docker.enable = true;
+
+  # Enable zsh and oh-my-zsh
+  programs.zsh.enable = true;
+  programs.oh-my-zsh = {
+    enable = true;
+    customPkgs = with pkgs; [ git fastfetch ];
+    theme = "agnoster";
+    plugins = [ "git" "python" "docker" ];
+    enableZshCompletion = true;
+  };
+
+  # Enable firewall and open common ports
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
+  networking.firewall.allowedUDPPorts = [ ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # on your system were taken.
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
