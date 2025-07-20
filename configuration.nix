@@ -126,4 +126,12 @@
   # settings for stateful data, like file locations and database versions
   # on your system were taken.
   system.stateVersion = "25.05"; # Did you read the comment?
+
+  # Enable XFCE desktop environment
+  services.xserver = {
+    enable = true;
+    displayManager.lightdm.enable = true;
+    desktopManager.xfce.enable = true;
+  };
+
 }
