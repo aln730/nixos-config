@@ -6,7 +6,10 @@
   users.users.zxcv = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" ];
+    shell = pkgs.zsh;
   };
+
+  programs.zsh.enable = true;
 
   environment.systemPackages = with pkgs; [
     git curl wget ripgrep fd
