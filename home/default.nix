@@ -11,6 +11,5 @@
     enable = true;
     userName = "aln730";
     userEmail = "arnsg730@proton.me";
-    gpg.format = null;
   };
 }
