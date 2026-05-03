@@ -32,8 +32,8 @@
     in {
       # NixOS machines
       nixosConfigurations = {
-        x250  = mkHost "rubidium"  [ nixos-hardware.nixosModules.lenovo-thinkpad-x250 ];
-        t440p = mkHost "carbon" [ nixos-hardware.nixosModules.lenovo-thinkpad-t440p ];
+        rubidium  = mkHost "x250"  [ nixos-hardware.nixosModules.lenovo-thinkpad-x250 ];
+        carbon = mkHost "t440p" [ nixos-hardware.nixosModules.lenovo-thinkpad-t440p ];
       };
 
       # home-manager for tungsten (fedora)
