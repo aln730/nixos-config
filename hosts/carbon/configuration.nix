@@ -28,10 +28,13 @@
       };
       "802-1x" = {
         eap = "tls";
+	anonymous-identity = "anonymous@rit.edu";
         identity = "asg7201@rit.edu";
-        client-cert = "/etc/ssl/certs/eduroam/client.crt";
-        private-key = "/etc/ssl/certs/eduroam/client.key";
-        ca-cert = "/etc/ssl/certs/eduroam/cacert.crt";
+        client-cert = "/etc/wpa_supplicant/eduroam/client.p12";
+        private-key = "/etc/wpa_supplicant/eduroam/client.p12";
+        ca-cert = "/etc/wpa_supplicant/eduroam/cacert.cer";
+	private-key-password-flags = 0;
+        private-key-password = "Chom@1024"; #meme-password
       };
       ipv4.method = "auto";
       ipv6.method = "auto";
@@ -92,3 +95,4 @@
   ];
   system.stateVersion = "25.11";
 }
+
