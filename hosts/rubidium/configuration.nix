@@ -24,6 +24,33 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  networking.networkmanager.ensureProfiles.profiles = {
+    eduroam = {
+      connection = {
+        id = "eduroam";
+        type = "wifi";
+      };
+      wifi = {
+        mode = "infrastructure";
+        ssid = "eduroam";
+      };
+      wifi-security = {
+        key-mgmt = "wpa-eap";
+      };
+      "802-1x" = {
+        eap = "tls";
+	anonymous-identity = "anonymous@rit.edu";
+        identity = "asg7201@rit.edu";
+        client-cert = "/etc/wpa_supplicant/eduroam/client.p12";
+        private-key = "/etc/wpa_supplicant/eduroam/client.p12";
+        ca-cert = "/etc/wpa_supplicant/eduroam/cacert.cer";
+	private-key-password-flags = 0;
+        private-key-password = "Chom@1024"; #meme-password
+      };
+      ipv4.method = "auto";
+      ipv6.method = "auto";
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
